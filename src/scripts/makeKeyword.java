@@ -1,12 +1,6 @@
 package scripts;
 
-import java.io.File;
-import java.io.IOException;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
+import org.jsoup.Jsoup;
 import org.snu.ids.kkma.index.Keyword;
 import org.snu.ids.kkma.index.KeywordExtractor;
 import org.snu.ids.kkma.index.KeywordList;
@@ -15,6 +9,18 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.*;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * 3주차 실습 코드
@@ -38,23 +44,26 @@ public class makeKeyword {
 		this.input_file = file;
 	}
 
-	public void convertXml() throws ParserConfigurationException, SAXException, IOException {
+	public void convertXml() throws ParserConfigurationException, IOException, SAXException, TransformerException {
 		File collection = new File(this.input_file);
 		DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-        
-        Document indexDoc = docBuilder.newDocument();
-        Element indexDocs = indexDoc.createElement("docs");
-        
-        Document doc = docBuilder.parse(collection);
-        doc.getDocumentElement().normalize();
-        NodeList nList = doc.getElementsByTagName("doc");
-        for (int i = 0 ; i < nList.getLength() ; i++){
-            Node nNode = nList.item(i);
-            Element element = (Element) nNode;
-            String title = element.getElementsByTagName("title").item(0).getTextContent();
-            String body = element.getElementsByTagName("body").item(0).getTextContent();
-            KeywordExtractor ke = new KeywordExtractor();
+		DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+
+		Document indexDoc = docBuilder.newDocument();
+		Element xmlDocs = indexDoc.createElement("docs");
+
+		Document doc = docBuilder.parse(collection);
+		doc.getDocumentElement().normalize();
+
+		NodeList nList = doc.getElementsByTagName("doc");
+		for (int i = 0 ; i < nList.getLength() ; i++){
+			Node nNode = nList.item(i);
+
+			Element element = (Element) nNode;
+			String title = element.getElementsByTagName("title").item(0).getTextContent();
+			String body = element.getElementsByTagName("body").item(0).getTextContent();
+
+			KeywordExtractor ke = new KeywordExtractor();
 			KeywordList kl = ke.extractKeyword(body,true);
 
 			String indexBody = "";
@@ -64,10 +73,30 @@ public class makeKeyword {
 				Integer nounCount = kwrd.getCnt();
 				indexBody = indexBody + noun + " : " + nounCount + " # ";
 			}
-        }
-        
-        
-		System.out.println("3주차 실행완료");
-	}
 
+			Element xmlDoc = indexDoc.createElement("doc");
+			xmlDoc.setAttribute("id",Integer.toString(i));
+
+			Element xmlTitle = indexDoc.createElement("title");
+			Element xmlBody = indexDoc.createElement("body");
+
+			xmlTitle.setTextContent(title);
+			xmlBody.setTextContent(indexBody);
+
+			xmlDoc.appendChild(xmlTitle);
+			xmlDoc.appendChild(xmlBody);
+			xmlDocs.appendChild(xmlDoc);
+		}
+
+		indexDoc.appendChild(xmlDocs);
+
+		TransformerFactory transformerFactory = TransformerFactory.newInstance();
+		Transformer transformer = transformerFactory.newTransformer();
+		transformer.setOutputProperty(OutputKeys.ENCODING,"UTF-8");
+
+		DOMSource source = new DOMSource(xmlDocs);
+		StreamResult result = new StreamResult(new FileOutputStream(output_flie));
+
+		transformer.transform(source,result);
+	}
 }
