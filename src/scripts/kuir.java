@@ -25,5 +25,10 @@ public class kuir {
 			indexer indexer = new indexer(path);
 			indexer.convertTFIDF();
 		}
+		else if(command.equals("-m")) {
+			
+			MidTerm MidTerm = new MidTerm(path, query);
+			MidTerm.showSnippet();
+		}
 	}
 }
