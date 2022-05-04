@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 2022 오픈소스 SW 수업자료
 
 2022-1학기 건국대학교 오픈소스 SW 수업에서 사용하는 클래스 구조의 샘플 파일입니다.
@@ -63,3 +64,6 @@ ex) `java -cp ./jars/jsoup-1.13.1.jar:./jars/kkma-2.1.jar:bin scripts.kuir -c da
 `java -cp (외부 jar 파일 이름 1);(외부 jar 파일 이름 2);,,,,;bin scripts.kuir (args 1) (args 2) ,,, (args n)`
 
 ex) `java -cp ./jars/jsoup-1.13.1.jar;./jars/kkma-2.1.jar;bin scripts.kuir -c data`
+=======
+목승환의 22학년도 1학기 오픈소스 기초 실습용 레포지토리입니다
+>>>>>>> 44d4964848e8fc090cdf48a818992cf16cc635ec

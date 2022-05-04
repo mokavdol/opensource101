@@ -1,15 +1,26 @@
 package scripts;
 
+<<<<<<< HEAD
 import org.jsoup.Jsoup;
 import org.snu.ids.kkma.index.Keyword;
 import org.snu.ids.kkma.index.KeywordExtractor;
 import org.snu.ids.kkma.index.KeywordList;
+=======
+import java.io.File;
+import java.io.IOException;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+>>>>>>> 44d4964848e8fc090cdf48a818992cf16cc635ec
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+<<<<<<< HEAD
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -22,6 +33,8 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+=======
+>>>>>>> 44d4964848e8fc090cdf48a818992cf16cc635ec
 /**
  * 3주차 실습 코드
  * 
@@ -44,6 +57,7 @@ public class makeKeyword {
 		this.input_file = file;
 	}
 
+<<<<<<< HEAD
 	public void convertXml() throws ParserConfigurationException, IOException, SAXException, TransformerException {
 		File collection = new File(this.input_file);
 		DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
@@ -99,4 +113,24 @@ public class makeKeyword {
 
 		transformer.transform(source,result);
 	}
+=======
+	public void convertXml() throws ParserConfigurationException, SAXException, IOException {
+		File collection = new File(this.input_file);
+		DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+        Document doc = docBuilder.parse(collection);
+        doc.getDocumentElement().normalize();
+        NodeList nList = doc.getElementsByTagName("doc");
+        for (int i = 0 ; i < nList.getLength() ; i++){
+            Node nNode = nList.item(i);
+            Element element = (Element) nNode;
+            System.out.println(element.getElementsByTagName("title").item(0).getTextContent());
+            System.out.println(element.getElementsByTagName("body").item(0).getTextContent());
+        }
+        
+        
+		System.out.println("3주차 실행완료");
+	}
+
+>>>>>>> 44d4964848e8fc090cdf48a818992cf16cc635ec
 }
