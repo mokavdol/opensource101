@@ -13,10 +13,13 @@ public class kuir {
 		String command = args[0];   
 		String path = args[1];
 <<<<<<< HEAD
+<<<<<<< HEAD
 		String command2 = args[2];
 		String query = args[3];
 =======
 >>>>>>> 44d4964848e8fc090cdf48a818992cf16cc635ec
+=======
+>>>>>>> midterm
 
 		if(command.equals("-c")) {
 			makeCollection collection = new makeCollection(path);
@@ -31,6 +34,7 @@ public class kuir {
 			indexer.convertTFIDF();
 		}
 <<<<<<< HEAD
+<<<<<<< HEAD
 		else if(command.equals("-m")) {
 			if(command2.equals("-q")) {
 				MidTerm MidTerm = new MidTerm(path, query);
@@ -39,5 +43,7 @@ public class kuir {
 		}
 =======
 >>>>>>> 44d4964848e8fc090cdf48a818992cf16cc635ec
+=======
+>>>>>>> midterm
 	}
 }
